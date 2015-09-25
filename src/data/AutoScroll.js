@@ -168,10 +168,7 @@ chrome.storage.local.get(defaults, function (options) {
   inner.style.setProperty("width", "100%")
   inner.style.setProperty("height", "100%")
   inner.style.setProperty("z-index", "2147483647") // 32-bit signed int
-
-  var eCursor = document.createElement("img")
-  eCursor.style.setProperty("position", "absolute")
-  inner.appendChild(eCursor)
+  inner.style.setProperty("background-repeat", "no-repeat")
 
   shadow.appendChild(inner)
 
@@ -238,6 +235,8 @@ chrome.storage.local.get(defaults, function (options) {
 
     normalCursor()
 
+    inner.style.removeProperty("background-image")
+    inner.style.removeProperty("background-position")
     inner.style.setProperty("display", "none")
 
     state.timeout = null
@@ -253,7 +252,6 @@ chrome.storage.local.get(defaults, function (options) {
     // Force relayout
     //getComputedStyle(root).left;
     //getComputedStyle(inner).left;
-    //getComputedStyle(eCursor).left;
   }
 
   function normalCursor() {
@@ -270,9 +268,9 @@ chrome.storage.local.get(defaults, function (options) {
     addEventListener("mousemove", mousemove, true)
     addEventListener("mouseup", mouseup, true)
 
-    eCursor.setAttribute("src", image(o))
-    eCursor.style.setProperty("left", (x - 13) + "px")
-    eCursor.style.setProperty("top",  (y - 13) + "px")
+    inner.style.setProperty("background-image", "url(\"" + image(o) + "\")")
+    inner.style.setProperty("background-position", (x - 13) + "px " +
+                                                   (y - 13) + "px")
 
     inner.style.removeProperty("display")
   }
