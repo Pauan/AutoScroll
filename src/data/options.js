@@ -1,21 +1,6 @@
 require(["lib/chrome-extension/options", "lib/util/cell", "lib/util/ui"], function (options, cell, ui) {
   "use strict";
 
-  // TODO code duplication with AutoScroll.js
-  var defaults = {
-    dragThreshold: 10,
-    moveThreshold: 10,
-    moveSpeed: 5,
-    stickyScroll: true,
-    innerScroll: true,
-    scrollOnLinks: false,
-    sameSpeed: false,
-    capSpeed: "",
-    shouldCap: false,
-    ctrlClick: false,
-    middleClick: true
-  }
-
   function getOpts(f) {
     chrome.storage.local.get(defaults, function (options) {
       var opts = {}
