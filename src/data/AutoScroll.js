@@ -187,13 +187,6 @@
       //e.contentDocument.insertBefore(e.contentDocument.implementation.createDocumentType("html", "", ""), e.contentDocument.childNodes[0])
       //console.log(e.contentDocument.compatMode, e.contentDocument.doctype, document.doctype)
 
-      function stopScroll(e) {
-        if (e.stopImmediatePropagation) {
-          e.stopImmediatePropagation()
-        }
-        e.stopPropagation()
-      }
-
       function unclick() {
         cycle.stop()
         inner.style.removeProperty("cursor")
@@ -207,8 +200,6 @@
         getComputedStyle(inner).left;
         getComputedStyle(e).left;
         getComputedStyle(eCursor).left;
-
-        removeEventListener("scroll", stopScroll, true)
       }
 
       function normalCursor() {
@@ -293,8 +284,6 @@
       function show(o, x, y) {
         state.oldX = x
         state.oldY = y
-
-        addEventListener("scroll", stopScroll, true)
 
         normalCursor()
         eCursor.setAttribute("src", image(o))
