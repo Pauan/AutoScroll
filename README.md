@@ -12,3 +12,15 @@ Test these sites:
 * `https://www.opengl.org/sdk/docs/man/html/glDrawElements.xhtml`
 * `https://twitter.com/amcharts`
 * `http://addepar.github.io/ember-table/#/ember-table/simple`
+* `http://blog.dogecoin.com/`
+
+TODO
+
+* Use SVG rather than PNG images
+* Use the nice Radiance and Ambiance images provided by a user
+* Disable autoscrolling on Windows (since it has native autoscrolling already) ?
+* Fix `https://www.opengl.org/sdk/docs/man/html/glDrawElements.xhtml`
+* Add better scaling (slower when near the disc, faster when away from the disc, like in Firefox)
+* Add configurable scaling
+* Move speed should be 0 = slowest, 10 = fastest
+* Use a slider for the move speed, rather than a number box
