@@ -24,3 +24,5 @@ TODO
 * Add configurable scaling
 * Move speed should be 0 = slowest, 10 = fastest
 * Use a slider for the move speed, rather than a number box
+* Fix the severe bug with pinch-to-zoom on Mac
+* Add better promotional images on the Chrome Web Store
