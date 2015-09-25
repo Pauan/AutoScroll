@@ -105,17 +105,15 @@ chrome.storage.local.get(defaults, function (options) {
   var htmlNode = document.documentElement
 
   // The timer that does the actual scrolling; must be very fast so that the scrolling is smooth
-  function startCycle(elem) {
-    var scrollElem = (elem === htmlNode ? document.body : elem);
-
-    var scrollX = scrollElem.scrollLeft
-      , scrollY = scrollElem.scrollTop
+  function startCycle(elem, scroller) {
+    var scrollX = scroller.scrollLeft
+      , scrollY = scroller.scrollTop
 
     function loop() {
       state.timeout = requestAnimationFrame(loop)
 
-      var scrollWidth  = elem.scrollWidth  - elem.clientWidth
-        , scrollHeight = elem.scrollHeight - elem.clientHeight
+      var scrollWidth  = scroller.scrollWidth  - elem.clientWidth
+        , scrollHeight = scroller.scrollHeight - elem.clientHeight
 
       scrollX += state.dirX
       scrollY += state.dirY
@@ -135,8 +133,8 @@ chrome.storage.local.get(defaults, function (options) {
       }
 
       // This triggers a reflow
-      scrollElem.scrollLeft = scrollX
-      scrollElem.scrollTop  = scrollY
+      scroller.scrollLeft = scrollX
+      scroller.scrollTop  = scrollY
     }
 
     loop();
@@ -262,7 +260,7 @@ chrome.storage.local.get(defaults, function (options) {
     state.oldX = x
     state.oldY = y
 
-    startCycle(o.element)
+    startCycle(o.element, o.scroller)
 
     addEventListener("mousewheel", mousewheel, true)
     addEventListener("mousemove", mousemove, true)
@@ -302,22 +300,39 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
-  function canScroll(elem, style) {
+
+  function canScroll(style) {
     return style === "auto" || style === "scroll"
   }
 
-  function canScrollTop(elem, style) {
+  function canScrollTop(style) {
     return style === "auto" || style === "scroll" || style === "visible"
   }
 
-  function hasWidth(elem, can) {
-    var style = getComputedStyle(elem)
-    return can(elem, style.overflowX) && elem.scrollWidth > elem.clientWidth
-  }
 
-  function hasHeight(elem, can) {
-    var style = getComputedStyle(elem)
-    return can(elem, style.overflowY) && elem.scrollHeight > elem.clientHeight
+  function findScrollTop(element) {
+    var htmlStyle = getComputedStyle(htmlNode)
+    var bodyStyle = getComputedStyle(document.body)
+
+    var width = canScrollTop(htmlStyle.overflowX) &&
+                canScrollTop(bodyStyle.overflowX) &&
+                document.body.scrollWidth > element.clientWidth
+
+    var height = canScrollTop(htmlStyle.overflowY) &&
+                 canScrollTop(bodyStyle.overflowY) &&
+                 document.body.scrollHeight > element.clientHeight
+
+    if (width || height) {
+      return {
+        element:  element,
+        scroller: document.body,
+        width:    width,
+        height:   height
+      };
+
+    } else {
+      return null;
+    }
   }
 
   function findScroll(elem) {
@@ -326,14 +341,20 @@ chrome.storage.local.get(defaults, function (options) {
              elem !== document.body &&
              elem !== htmlNode) {
 
-        var width  = hasWidth(elem, canScroll)
-          , height = hasHeight(elem, canScroll)
+        var style = getComputedStyle(elem)
+
+        var width = canScroll(style.overflowX) &&
+                    elem.scrollWidth > elem.clientWidth
+
+        var height = canScroll(style.overflowY) &&
+                     elem.scrollHeight > elem.clientHeight
 
         if (width || height) {
           return {
-            element: elem,
-            width:   width,
-            height:  height
+            element:  elem,
+            scroller: elem,
+            width:    width,
+            height:   height
           }
 
         } else {
@@ -342,32 +363,11 @@ chrome.storage.local.get(defaults, function (options) {
       }
     }
 
-    //if (document.compatMode === "BackCompat") {
-
-    var body_width  = hasWidth(document.body, canScrollTop);
-    var body_height = hasHeight(document.body, canScrollTop);
-
-    if (body_width || body_height) {
-      return {
-        element: document.body,
-        width:   body_width,
-        height:  body_height
-      };
+    if (document.compatMode === "BackCompat") {
+      return findScrollTop(document.body);
 
     } else {
-      var html_width  = hasWidth(htmlNode, canScrollTop);
-      var html_height = hasHeight(htmlNode, canScrollTop);
-
-      if (html_width || html_height) {
-        return {
-          element: htmlNode,
-          width:   html_width,
-          height:  html_height
-        };
-
-      } else {
-        return null;
-      }
+      return findScrollTop(htmlNode);
     }
   }
 
