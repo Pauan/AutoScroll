@@ -26,3 +26,5 @@ TODO
 * Use a slider for the move speed, rather than a number box
 * Fix the severe bug with pinch-to-zoom on Mac
 * Add better promotional images on the Chrome Web Store
+* Add in an option for reversing the X and Y axis (up is down, down is up, etc.)
+* Add in touchscreen/tablet support
