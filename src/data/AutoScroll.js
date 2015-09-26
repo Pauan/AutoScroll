@@ -99,7 +99,8 @@ chrome.storage.local.get(defaults, function (options) {
     dirX: null,
     dirY: null,
 
-    click: false
+    click: false,
+    scrolling: false
   }
 
   var htmlNode = document.documentElement
@@ -246,6 +247,7 @@ chrome.storage.local.get(defaults, function (options) {
     state.dirY = null
 
     state.click = false
+    state.scrolling = false
 
     // Force relayout
     //getComputedStyle(root).left;
@@ -257,6 +259,7 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   function show(o, x, y) {
+    state.scrolling = true
     state.oldX = x
     state.oldY = y
 
@@ -392,7 +395,8 @@ chrome.storage.local.get(defaults, function (options) {
     document.body.appendChild(root)
 
     addEventListener("mousedown", function (e) {
-      if (((e.button === 1 && options.middleClick) ||
+      if (!state.scrolling &&
+          ((e.button === 1 && options.middleClick) ||
            (e.button === 0 && (e.ctrlKey || e.metaKey) && options.ctrlClick)) &&
           e.clientX < htmlNode.clientWidth &&
           !isInvalid(e.target)) {
