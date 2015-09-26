@@ -172,6 +172,7 @@ chrome.storage.local.get(defaults, function (options) {
   shadow.appendChild(inner)
 
 
+  // TODO use `stopEvent` ?
   function mousewheel(event) {
     event.preventDefault()
   }
@@ -374,6 +375,14 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
+  function stopEvent(e) {
+    if (e.stopImmediatePropagation) {
+      e.stopImmediatePropagation()
+    }
+    e.stopPropagation()
+    e.preventDefault()
+  }
+
   // TODO would be useful for other extensions too
   function ready(f) {
     if (document.body) {
@@ -395,21 +404,21 @@ chrome.storage.local.get(defaults, function (options) {
     document.body.appendChild(root)
 
     addEventListener("mousedown", function (e) {
-      if (!state.scrolling &&
-          ((e.button === 1 && options.middleClick) ||
-           (e.button === 0 && (e.ctrlKey || e.metaKey) && options.ctrlClick)) &&
-          e.clientX < htmlNode.clientWidth &&
-          !isInvalid(e.target)) {
+      if (state.scrolling) {
+        stopEvent(e)
 
-        var elem = findScroll(e.target)
+      } else {
+        if (((e.button === 1 && options.middleClick) ||
+             (e.button === 0 && (e.ctrlKey || e.metaKey) && options.ctrlClick)) &&
+            e.clientX < htmlNode.clientWidth &&
+            !isInvalid(e.target)) {
 
-        if (elem !== null) {
-          if (e.stopImmediatePropagation) {
-            e.stopImmediatePropagation()
+          var elem = findScroll(e.target)
+
+          if (elem !== null) {
+            stopEvent(e)
+            show(elem, e.clientX, e.clientY)
           }
-          e.stopPropagation()
-          e.preventDefault()
-          show(elem, e.clientX, e.clientY)
         }
       }
     }, true)
