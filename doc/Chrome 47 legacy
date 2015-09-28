@@ -1,0 +1,56 @@
+CSS1Compat
+----
+normal
+  window
+    client: 1600 x 821
+  <html>
+    client: 1585 x 821
+    scroll: 1585 x 99999
+  <body>
+    client: 1585 x 99999
+    scroll: 1585 x 99999
+  scrollingElement
+    client: 1585 x 99999
+    scroll: 1585 x 99999
+----
+margins
+  window
+    client: 1600 x 821
+  <html>
+    client: 1585 x 821
+    scroll: 1565 x 100019
+  <body>
+    client: 1545 x 99999
+    scroll: 1585 x 100039
+  scrollingElement
+    client: 1545 x 99999
+    scroll: 1585 x 100039
+
+
+BackCompat
+----
+normal
+  window
+    client: 1600 x 821
+  <html>
+    client: 1585 x 99999
+    scroll: 1585 x 99999
+  <body>
+    client: 1585 x 821
+    scroll: 1585 x 99999
+  scrollingElement
+    client: 1585 x 821
+    scroll: 1585 x 99999
+----
+margins
+  window
+    client: 1600 x 821
+  <html>
+    client: 1565 x 100019
+    scroll: 1565 x 100019
+  <body>
+    client: 1585 x 821
+    scroll: 1585 x 100039
+  scrollingElement
+    client: 1585 x 821
+    scroll: 1585 x 100039

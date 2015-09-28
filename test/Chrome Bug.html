@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <style>
+      html {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        height: 100%;
+        margin: 0px;
+        overflow: auto;
+      }
+
+      #page {
+        height: 200%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page"></div>
+
+    <script>
+      console.log("window");
+      console.log("  client: " + window.innerWidth + " x " + window.innerHeight);
+
+      console.log("<html>");
+      console.log("  client: " + document.documentElement.clientWidth + " x " +
+                                 document.documentElement.clientHeight);
+      console.log("  scroll: " + document.documentElement.scrollWidth + " x " +
+                                 document.documentElement.scrollHeight);
+
+      console.log("<body>");
+      console.log("  client: " + document.body.clientWidth + " x " +
+                                 document.body.clientHeight);
+      console.log("  scroll: " + document.body.scrollWidth + " x " +
+                                 document.body.scrollHeight);
+    </script>
+  </body>
+</html>
