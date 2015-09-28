@@ -454,8 +454,8 @@ chrome.storage.local.get(defaults, function (options) {
         stopEvent(e)
 
       } else {
-        if (((e.button === 1 && options.middleClick) ||
-             (e.button === 0 && (e.ctrlKey || e.metaKey) && options.ctrlClick)) &&
+        if (((e.button === 1 && options["middleClick"]) ||
+             (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
             e.clientX < htmlNode.clientWidth &&
             isValid(e.target)) {
 
