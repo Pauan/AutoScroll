@@ -274,25 +274,36 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
 
+  // TODO maybe handle `contentEditable` ?
   function isInvalid(elem) {
+    return (elem.localName === "a" && elem.href) ||
+           (elem.localName === "textarea") ||
+           // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input
+           (elem.localName === "input" &&
+            !(elem.type === "button"   ||
+              elem.type === "checkbox" ||
+              elem.type === "file"     ||
+              elem.type === "hidden"   ||
+              elem.type === "image"    ||
+              elem.type === "radio"    ||
+              elem.type === "reset"    ||
+              elem.type === "submit"));
+  }
+
+  function isValid(elem) {
     if (options["scrollOnLinks"]) {
-      return false
-    // <input> tags can't have children, so the only time it will ever occur is as event.target
-    } else if (elem.localName === "input") {
-      return !(elem.type === "button"   ||
-               elem.type === "checkbox" ||
-               elem.type === "file"     ||
-               elem.type === "hidden"   ||
-               elem.type === "image"    ||
-               elem.type === "radio"    ||
-               elem.type === "reset"    ||
-               elem.type === "submit")
+      return true
+
     } else {
       while (true) {
-        if (elem === document || elem === document.body || elem === htmlNode) {
-          return false
-        } else if (elem.localName === "a" && elem.href || elem.localName === "textarea") {
+        if (elem === document ||
+            elem === document.body ||
+            elem === htmlNode) {
           return true
+
+        } else if (isInvalid(elem)) {
+          return false
+
         } else {
           elem = elem.parentNode
         }
@@ -446,7 +457,7 @@ chrome.storage.local.get(defaults, function (options) {
         if (((e.button === 1 && options.middleClick) ||
              (e.button === 0 && (e.ctrlKey || e.metaKey) && options.ctrlClick)) &&
             e.clientX < htmlNode.clientWidth &&
-            !isInvalid(e.target)) {
+            isValid(e.target)) {
 
           var elem = findScroll(e.target)
 
