@@ -309,27 +309,63 @@ chrome.storage.local.get(defaults, function (options) {
     return style === "auto" || style === "scroll"
   }
 
-  function canScrollTop(style) {
-    return style === "auto" || style === "scroll" || style === "visible"
+  /**
+   * Shows scrollbar:
+   *   <html>   <body>
+   *   visible  visible
+   *   visible  auto
+   *   visible  scroll
+   *   auto     visible
+   *   auto     auto
+   *   auto     scroll
+   *   auto     hidden
+   *   scroll   visible
+   *   scroll   auto
+   *   scroll   scroll
+   *   scroll   hidden
+   *
+   * Does not show scrollbar:
+   *   <html>   <body>
+   *   visible  hidden
+   *   hidden   visible
+   *   hidden   auto
+   *   hidden   scroll
+   *   hidden   hidden
+   */
+  function canScrollTop(html, body) {
+    switch (html) {
+    case "visible":
+      return body !== "hidden";
+
+    case "auto":
+    case "scroll":
+      return true;
+
+    default:
+      return false;
+    }
   }
 
 
   function findScrollTop(element) {
+    // TODO this isn't quite correct, but it's close enough
+    var scroller = (document.scrollingElement
+                     ? document.scrollingElement
+                     : document.body);
+
     var htmlStyle = getComputedStyle(htmlNode)
     var bodyStyle = getComputedStyle(document.body)
 
-    var width = canScrollTop(htmlStyle.overflowX) &&
-                canScrollTop(bodyStyle.overflowX) &&
-                document.body.scrollWidth > element.clientWidth
+    var width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) &&
+                scroller.scrollWidth > element.clientWidth
 
-    var height = canScrollTop(htmlStyle.overflowY) &&
-                 canScrollTop(bodyStyle.overflowY) &&
-                 document.body.scrollHeight > element.clientHeight
+    var height = canScrollTop(htmlStyle.overflowY, bodyStyle.overflowY) &&
+                 scroller.scrollHeight > element.clientHeight
 
     if (width || height) {
       return {
         element:  element,
-        scroller: document.body,
+        scroller: scroller,
         width:    width,
         height:   height
       };
@@ -339,6 +375,7 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
+  // TODO this should handle the case where <body> has its own scrollbar (separate from the viewport's scrollbar)
   function findScroll(elem) {
     if (options["innerScroll"]) {
       while (elem !== document &&
@@ -367,6 +404,8 @@ chrome.storage.local.get(defaults, function (options) {
       }
     }
 
+    // TODO hack needed to work around non-spec-compliant versions of Chrome
+    //      https://code.google.com/p/chromium/issues/detail?id=157855
     if (document.compatMode === "BackCompat") {
       return findScrollTop(document.body);
 
