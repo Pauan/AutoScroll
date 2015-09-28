@@ -14,6 +14,7 @@ Test these sites:
 * `http://addepar.github.io/ember-table/#/ember-table/simple`
 * `http://blog.dogecoin.com/`
 * `https://plus.google.com/`
+* `https://duckduckgo.com/?q=test&ia=meanings`
 
 TODO
 
