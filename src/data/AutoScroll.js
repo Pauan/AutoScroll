@@ -172,12 +172,15 @@ chrome.storage.local.get(defaults, function (options) {
   shadow.appendChild(inner)
 
 
-  // TODO use `stopEvent` ?
   function mousewheel(event) {
-    event.preventDefault()
+    // TODO is this a good idea ?
+    stopEvent(event)
   }
 
   function mousemove(event) {
+    // TODO is this a good idea ?
+    stopEvent(event)
+
     var x = event.clientX - state.oldX,
         y = event.clientY - state.oldY
 
@@ -216,6 +219,9 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   function mouseup(event) {
+    // TODO is this a good idea ?
+    stopEvent(event)
+
     var x = event.clientX - state.oldX,
         y = event.clientY - state.oldY
 
@@ -229,7 +235,7 @@ chrome.storage.local.get(defaults, function (options) {
   function unclick() {
     cancelAnimationFrame(state.timeout)
 
-    removeEventListener("mousewheel", mousewheel, true)
+    removeEventListener("wheel", mousewheel, true)
     removeEventListener("mousemove", mousemove, true)
     removeEventListener("mouseup", mouseup, true)
 
@@ -262,7 +268,7 @@ chrome.storage.local.get(defaults, function (options) {
 
     startCycle(o.element, o.scroller)
 
-    addEventListener("mousewheel", mousewheel, true)
+    addEventListener("wheel", mousewheel, true)
     addEventListener("mousemove", mousemove, true)
     addEventListener("mouseup", mouseup, true)
 
