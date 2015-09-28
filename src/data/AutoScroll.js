@@ -96,8 +96,8 @@ chrome.storage.local.get(defaults, function (options) {
     oldX: null,
     oldY: null,
 
-    dirX: null,
-    dirY: null,
+    dirX: 0,
+    dirY: 0,
 
     click: false,
     scrolling: false
@@ -244,15 +244,11 @@ chrome.storage.local.get(defaults, function (options) {
     state.oldX = null
     state.oldY = null
 
-    state.dirX = null
-    state.dirY = null
+    state.dirX = 0
+    state.dirY = 0
 
     state.click = false
     state.scrolling = false
-
-    // Force relayout
-    //getComputedStyle(root).left;
-    //getComputedStyle(inner).left;
   }
 
   function normalCursor() {
@@ -293,7 +289,7 @@ chrome.storage.local.get(defaults, function (options) {
                elem.type === "submit")
     } else {
       while (true) {
-        if (elem === document.body || elem === htmlNode) {
+        if (elem === document || elem === document.body || elem === htmlNode) {
           return false
         } else if (elem.localName === "a" && elem.href || elem.localName === "textarea") {
           return true
@@ -406,11 +402,11 @@ chrome.storage.local.get(defaults, function (options) {
 
     // TODO hack needed to work around non-spec-compliant versions of Chrome
     //      https://code.google.com/p/chromium/issues/detail?id=157855
-    if (document.compatMode === "BackCompat") {
-      return findScrollTop(document.body);
+    if (document.compatMode === "CSS1Compat") {
+      return findScrollTop(htmlNode);
 
     } else {
-      return findScrollTop(htmlNode);
+      return findScrollTop(document.body);
     }
   }
 
