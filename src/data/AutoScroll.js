@@ -177,12 +177,12 @@ chrome.storage.local.get(defaults, function (options) {
 
   function mousewheel(event) {
     // TODO is this a good idea ?
-    stopEvent(event)
+    stopEvent(event, true)
   }
 
   function mousemove(event) {
     // TODO is this a good idea ?
-    stopEvent(event)
+    stopEvent(event, true)
 
     var x = event.clientX - state.oldX,
         y = event.clientY - state.oldY
@@ -223,7 +223,7 @@ chrome.storage.local.get(defaults, function (options) {
 
   function mouseup(event) {
     // TODO is this a good idea ?
-    stopEvent(event)
+    stopEvent(event, true)
 
     var x = event.clientX - state.oldX,
         y = event.clientY - state.oldY
@@ -430,12 +430,16 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
-  function stopEvent(e) {
+  function stopEvent(e, preventDefault) {
     if (e.stopImmediatePropagation) {
       e.stopImmediatePropagation()
     }
+
     e.stopPropagation()
-    e.preventDefault()
+
+    if (preventDefault) {
+      e.preventDefault()
+    }
   }
 
   // TODO would be useful for other extensions too
@@ -460,7 +464,7 @@ chrome.storage.local.get(defaults, function (options) {
 
     addEventListener("mousedown", function (e) {
       if (state.scrolling) {
-        stopEvent(e)
+        stopEvent(e, false)
 
       } else {
         if (((e.button === 1 && options["middleClick"]) ||
@@ -471,7 +475,7 @@ chrome.storage.local.get(defaults, function (options) {
           var elem = findScroll(e.target)
 
           if (elem !== null) {
-            stopEvent(e)
+            stopEvent(e, false)
             show(elem, e.clientX, e.clientY)
           }
         }
