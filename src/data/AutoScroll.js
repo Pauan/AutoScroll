@@ -155,7 +155,10 @@ chrome.storage.local.get(defaults, function (options) {
 
   // TODO replace with `attachShadow` once it's supported in Chrome
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/createShadowRoot
-  var shadow = root.createShadowRoot()
+  var shadow = (root.createShadowRoot
+                 ? root.createShadowRoot()
+                 // TODO hack for Chrome 29 to 34, remove this later
+                 : root.webkitCreateShadowRoot())
 
   var inner = document.createElement("div")
   // TODO hack to make it so that Chrome doesn't repaint when scrolling
