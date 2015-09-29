@@ -287,16 +287,7 @@ chrome.storage.local.get(defaults, function (options) {
   function isInvalid(elem) {
     return (elem.localName === "a" && elem.href) ||
            (elem.localName === "textarea") ||
-           // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input
-           (elem.localName === "input" &&
-            !(elem.type === "button"   ||
-              elem.type === "checkbox" ||
-              elem.type === "file"     ||
-              elem.type === "hidden"   ||
-              elem.type === "image"    ||
-              elem.type === "radio"    ||
-              elem.type === "reset"    ||
-              elem.type === "submit"));
+           (elem.localName === "input");
   }
 
   function isValid(elem) {
@@ -443,6 +434,7 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   // TODO would be useful for other extensions too
+  // TODO we might not need this anymore
   function ready(f) {
     if (document.body) {
       f()
