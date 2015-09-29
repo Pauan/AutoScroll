@@ -4,18 +4,47 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <style>
-      body {
+      html, body {
+        width: 100%;
+        height: 100%;
         margin: 0px;
       }
 
+      input[type="hidden"] {
+        display: inline-block !important;
+        width: 200px !important;
+        height: 100px !important;
+        border: 1px solid black !important;
+        padding: 0px !important;
+        background-color: transparent !important;
+        -webkit-appearance: textfield !important;
+      }
+
       #page {
-        height: 9999px;
+        height: 200%;
         padding: 30px;
+      }
+
+      #focus {
+        width: 200px;
+        height: 100px;
+        background-color: red;
+      }
+
+      #focus:focus {
+        background-color: green;
       }
     </style>
   </head>
   <body>
     <div id="page">
+      <p>
+        <div id="focus" tabindex="0"></div>
+      </p>
+
+      <p>
+        <a>Example</a>
+      </p>
       <p>
         <a href="http://example.com">Example</a>
       </p>
@@ -25,9 +54,33 @@
       <p>
         <a href="http://example.com"><input type="button" value="Example"></input></a>
       </p>
+      <p>
+        <textarea></textarea>
+      </p>
 
       <p>
         <input type="button" value="Example"></input>
+      </p>
+      <p>
+        <input type="checkbox"></input>
+      </p>
+      <p>
+        <input type="file"></input>
+      </p>
+      <p>
+        <input type="hidden"></input>
+      </p>
+      <p>
+        <input type="image"></input>
+      </p>
+      <p>
+        <input type="radio"></input>
+      </p>
+      <p>
+        <input type="reset"></input>
+      </p>
+      <p>
+        <input type="submit"></input>
       </p>
     </div>
   </body>
