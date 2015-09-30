@@ -19,27 +19,31 @@ function printDimensions(name) {
   console.log("    scroll: " + document.body.scrollWidth + " x " +
                                document.body.scrollHeight);
 
-  console.log("  scrollingElement");
-  console.log("    client: " + document.scrollingElement.clientWidth + " x " +
-                               document.scrollingElement.clientHeight);
-  console.log("    scroll: " + document.scrollingElement.scrollWidth + " x " +
-                               document.scrollingElement.scrollHeight);
+  if (document.scrollingElement) {
+    console.log("  scrollingElement");
+    console.log("    client: " + document.scrollingElement.clientWidth + " x " +
+                                 document.scrollingElement.clientHeight);
+    console.log("    scroll: " + document.scrollingElement.scrollWidth + " x " +
+                                 document.scrollingElement.scrollHeight);
+  }
 }
 
 
 console.log(document.compatMode);
 
 
-if (document.scrollingElement === document.documentElement) {
-  console.log("scrollingElement === <html>");
-} else {
-  console.log("scrollingElement !== <html>");
-}
+if (document.scrollingElement) {
+  if (document.scrollingElement === document.documentElement) {
+    console.log("scrollingElement === <html>");
+  } else {
+    console.log("scrollingElement !== <html>");
+  }
 
-if (document.scrollingElement === document.body) {
-  console.log("scrollingElement === <body>");
-} else {
-  console.log("scrollingElement !== <body>");
+  if (document.scrollingElement === document.body) {
+    console.log("scrollingElement === <body>");
+  } else {
+    console.log("scrollingElement !== <body>");
+  }
 }
 
 
