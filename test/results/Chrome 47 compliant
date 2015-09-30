@@ -1,56 +1,86 @@
 CSS1Compat
+scrollingElement === <html>
+scrollingElement !== <body>
 ----
 normal
   window
     client: 1600 x 821
   <html>
     client: 1585 x 821
-    scroll: 1585 x 99999
+    scroll: 1585 x 9999
   <body>
-    client: 1585 x 99999
-    scroll: 1585 x 99999
+    client: 1585 x 9999
+    scroll: 1585 x 9999
   scrollingElement
     client: 1585 x 821
-    scroll: 1585 x 99999
+    scroll: 1585 x 9999
 ----
 margins
   window
     client: 1600 x 821
   <html>
     client: 1585 x 821
-    scroll: 1585 x 100039
+    scroll: 1585 x 10039
   <body>
-    client: 1545 x 99999
-    scroll: 1545 x 99999
+    client: 1545 x 9999
+    scroll: 1545 x 9999
   scrollingElement
     client: 1585 x 821
-    scroll: 1585 x 100039
+    scroll: 1585 x 10039
+----
+overflow
+  window
+    client: 1600 x 821
+  <html>
+    client: 1585 x 821
+    scroll: 1585 x 9999
+  <body>
+    client: 1189 x 616
+    scroll: 1189 x 9999
+  scrollingElement
+    client: 1585 x 821
+    scroll: 1585 x 9999
 
 
 BackCompat
+scrollingElement !== <html>
+scrollingElement === <body>
 ----
 normal
   window
     client: 1600 x 821
   <html>
-    client: 1585 x 99999
-    scroll: 1585 x 99999
+    client: 1585 x 9999
+    scroll: 1585 x 9999
   <body>
     client: 1585 x 821
-    scroll: 1585 x 99999
+    scroll: 1585 x 9999
   scrollingElement
     client: 1585 x 821
-    scroll: 1585 x 99999
+    scroll: 1585 x 9999
 ----
 margins
   window
     client: 1600 x 821
   <html>
-    client: 1565 x 100019
-    scroll: 1565 x 100019
+    client: 1565 x 10019
+    scroll: 1565 x 10019
   <body>
     client: 1585 x 821
-    scroll: 1585 x 100039
+    scroll: 1585 x 10039
   scrollingElement
     client: 1585 x 821
-    scroll: 1585 x 100039
+    scroll: 1585 x 10039
+----
+overflow
+  window
+    client: 1600 x 821
+  <html>
+    client: 1585 x 821
+    scroll: 1585 x 9999
+  <body>
+    client: 1585 x 821
+    scroll: 1585 x 9999
+  scrollingElement
+    client: 1585 x 821
+    scroll: 1585 x 9999

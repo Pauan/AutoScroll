@@ -30,6 +30,19 @@ function printDimensions(name) {
 console.log(document.compatMode);
 
 
+if (document.scrollingElement === document.documentElement) {
+  console.log("scrollingElement === <html>");
+} else {
+  console.log("scrollingElement !== <html>");
+}
+
+if (document.scrollingElement === document.body) {
+  console.log("scrollingElement === <body>");
+} else {
+  console.log("scrollingElement !== <body>");
+}
+
+
 printDimensions("normal");
 
 
@@ -37,3 +50,21 @@ document.documentElement.style.margin = "10px";
 document.body.style.margin = "10px";
 
 printDimensions("margins");
+
+document.documentElement.style.margin = "";
+document.body.style.margin = "";
+
+
+document.documentElement.style.width = "100%";
+document.documentElement.style.height = "100%";
+document.body.style.width = "75%";
+document.body.style.height = "75%";
+document.body.style.overflow = "auto";
+
+printDimensions("overflow");
+
+//document.documentElement.style.width = "";
+//document.documentElement.style.height = "";
+//document.body.style.width = "";
+//document.body.style.height = "";
+//document.body.overflow = "";

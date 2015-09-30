@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+body {
+  margin: 0px;
+}
+
+#page {
+  height: 9999px;
+  background-image: repeating-linear-gradient(to bottom,
+                      transparent 0px,
+                      transparent 10px,
+                      red 11px);
+}
