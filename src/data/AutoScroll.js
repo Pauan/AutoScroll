@@ -382,6 +382,28 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
+  function findScrollNormal(elem) {
+    var style = getComputedStyle(elem)
+
+    var width = canScroll(style.overflowX) &&
+                elem.scrollWidth > elem.clientWidth
+
+    var height = canScroll(style.overflowY) &&
+                 elem.scrollHeight > elem.clientHeight
+
+    if (width || height) {
+      return {
+        element:  elem,
+        scroller: elem,
+        width:    width,
+        height:   height
+      }
+
+    } else {
+      return null
+    }
+  }
+
   // TODO this should handle the case where <body> has its own scrollbar (separate from the viewport's scrollbar)
   function findScroll(elem) {
     if (options["innerScroll"]) {
@@ -389,24 +411,13 @@ chrome.storage.local.get(defaults, function (options) {
              elem !== document.body &&
              elem !== htmlNode) {
 
-        var style = getComputedStyle(elem)
+        var x = findScrollNormal(elem)
 
-        var width = canScroll(style.overflowX) &&
-                    elem.scrollWidth > elem.clientWidth
-
-        var height = canScroll(style.overflowY) &&
-                     elem.scrollHeight > elem.clientHeight
-
-        if (width || height) {
-          return {
-            element:  elem,
-            scroller: elem,
-            width:    width,
-            height:   height
-          }
+        if (x === null) {
+          elem = elem.parentNode
 
         } else {
-          elem = elem.parentNode
+          return x
         }
       }
     }
