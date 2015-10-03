@@ -10,6 +10,6 @@ var defaults = {
   sameSpeed: false,
   capSpeed: "",
   shouldCap: false,
-  ctrlClick: false,
+  ctrlClick: true,
   middleClick: true
 }
