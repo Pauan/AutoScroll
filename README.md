@@ -31,3 +31,8 @@ TODO
 * Add in touchscreen/tablet support
 * When scrolling horizontally, it should only scroll when the mouse is to the left/right of the disc, like in Firefox
 * When scrolling vertically, it should only scroll when the mouse is to the top/bottom of the disc, like in Firefox
+
+Intentional differences with Firefox
+====================================
+
+* AutoScroll does not scroll on `contenteditable` elements; Firefox does
