@@ -283,9 +283,9 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
 
-  // TODO maybe handle `contentEditable` ?
   function isInvalid(elem) {
-    return (elem.localName === "a" && elem.href) ||
+    return elem.isContentEditable ||
+           (elem.localName === "a" && elem.href) ||
            (elem.localName === "textarea") ||
            (elem.localName === "input");
   }

@@ -25,13 +25,13 @@
         padding: 30px;
       }
 
-      #focus {
+      .input {
         width: 200px;
         height: 100px;
         background-color: red;
       }
 
-      #focus:focus {
+      .input:focus {
         background-color: green;
       }
     </style>
@@ -39,7 +39,7 @@
   <body>
     <div id="page">
       <p>
-        <div id="focus" tabindex="0"></div>
+        <div class="input" tabindex="0"></div>
       </p>
 
       <p>
@@ -81,6 +81,10 @@
       </p>
       <p>
         <input type="submit"></input>
+      </p>
+
+      <p>
+        <div class="input" contenteditable="true"></div>
       </p>
     </div>
   </body>
