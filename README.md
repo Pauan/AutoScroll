@@ -42,3 +42,4 @@ TODO
 * When scrolling vertically, it should only scroll when the mouse is to the top/bottom of the disc, like in Firefox
 * Add in an option to stop autoscrolling when the user scrolls with the mouse wheel
 * Option for keyboard-only control
+* Option to change the key binding for activating AutoScroll
