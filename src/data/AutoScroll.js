@@ -103,8 +103,14 @@ chrome.storage.local.get(defaults, function (options) {
     scrolling: false
   }
 
-  var htmlNode = document.documentElement
   var htmlNamespace = "http://www.w3.org/1999/xhtml"
+
+  var htmlNode = document.documentElement
+
+  // This is needed to support SVG
+  var bodyNode = (document.body
+                   ? document.body
+                   : htmlNode)
 
   // The timer that does the actual scrolling; must be very fast so that the scrolling is smooth
   function startCycle(elem, scroller, root) {
@@ -161,12 +167,7 @@ chrome.storage.local.get(defaults, function (options) {
 
 
   // This is needed to make AutoScroll work in SVG documents
-  var outer = document.createElementNS(htmlNode.namespaceURI, "foreignObject")
-
-  outer.setAttribute("x", "0px");
-  outer.setAttribute("y", "0px");
-  outer.setAttribute("width", "100%");
-  outer.setAttribute("height", "100%");
+  var outer = document.createElementNS(htmlNamespace, "AutoScroll")
 
 
   // TODO replace with `attachShadow` once it's supported in Chrome
@@ -315,7 +316,7 @@ chrome.storage.local.get(defaults, function (options) {
       while (true) {
         if (elem === document ||
             elem === htmlNode ||
-            elem === document.body) {
+            elem === bodyNode) {
           return true
 
         } else if (isInvalid(elem)) {
@@ -373,17 +374,12 @@ chrome.storage.local.get(defaults, function (options) {
 
   // TODO this isn't quite correct, but it's close enough
   function findScrollTop(element) {
-    // This is needed to support SVG
-    var body = (document.body
-                 ? document.body
-                 : htmlNode)
-
     var scroller = (document.scrollingElement
                      ? document.scrollingElement
-                     : body)
+                     : bodyNode)
 
     var htmlStyle = getComputedStyle(htmlNode)
-    var bodyStyle = getComputedStyle(body)
+    var bodyStyle = getComputedStyle(bodyNode)
 
     var width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) &&
                 scroller.scrollWidth > element.clientWidth
@@ -433,7 +429,7 @@ chrome.storage.local.get(defaults, function (options) {
     if (options["innerScroll"]) {
       while (elem !== document &&
              elem !== htmlNode &&
-             elem !== document.body) {
+             elem !== bodyNode) {
 
         var x = findScrollNormal(elem)
 
@@ -452,7 +448,7 @@ chrome.storage.local.get(defaults, function (options) {
       return findScrollTop(htmlNode);
 
     } else {
-      return findScrollTop(document.body);
+      return findScrollTop(bodyNode);
     }
   }
 
@@ -476,8 +472,8 @@ chrome.storage.local.get(defaults, function (options) {
       if (((e.button === 1 && options["middleClick"]) ||
            (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
           // TODO what about using middle click on the scrollbar of a non-<html> element ?
-          e.clientX < htmlNode.clientWidth &&
-          e.clientY < htmlNode.clientHeight &&
+          e.clientX < bodyNode.clientWidth &&
+          e.clientY < bodyNode.clientHeight &&
           isValid(e.target)) {
 
         var elem = findScroll(e.target)

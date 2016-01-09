@@ -15,6 +15,7 @@ Test these sites:
 * `http://blog.dogecoin.com/`
 * `https://plus.google.com/`
 * `https://duckduckgo.com/?q=test&ia=meanings`
+* `https://upload.wikimedia.org/wikipedia/commons/1/1a/SVG_example_markup_grid.svg`
 
 TODO
 
