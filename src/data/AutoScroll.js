@@ -107,9 +107,10 @@ chrome.storage.local.get(defaults, function (options) {
   var htmlNamespace = "http://www.w3.org/1999/xhtml"
 
   // The timer that does the actual scrolling; must be very fast so that the scrolling is smooth
-  function startCycle(elem, scroller) {
-    var scrollX = scroller.scrollLeft
-      , scrollY = scroller.scrollTop
+  function startCycle(elem, scroller, root) {
+    // This is needed to support SVG
+    var scrollX = (root ? window.scrollX : scroller.scrollLeft)
+      , scrollY = (root ? window.scrollY : scroller.scrollTop)
 
     function loop() {
       state.timeout = requestAnimationFrame(loop)
@@ -134,9 +135,16 @@ chrome.storage.local.get(defaults, function (options) {
         scrollY = scrollHeight
       }
 
-      // This triggers a reflow
-      scroller.scrollLeft = scrollX
-      scroller.scrollTop  = scrollY
+      // This is needed to support SVG
+      if (root) {
+        // This triggers a reflow
+        window.scroll(scrollX, scrollY);
+
+      } else {
+        // This triggers a reflow
+        scroller.scrollLeft = scrollX
+        scroller.scrollTop  = scrollY
+      }
     }
 
     loop();
@@ -278,7 +286,7 @@ chrome.storage.local.get(defaults, function (options) {
     state.oldX = x
     state.oldY = y
 
-    startCycle(o.element, o.scroller)
+    startCycle(o.element, o.scroller, o.root)
 
     addEventListener("wheel", mousewheel, true)
     addEventListener("mousemove", mousemove, true)
@@ -388,7 +396,8 @@ chrome.storage.local.get(defaults, function (options) {
         element:  element,
         scroller: scroller,
         width:    width,
-        height:   height
+        height:   height,
+        root:     true
       };
 
     } else {
@@ -410,7 +419,8 @@ chrome.storage.local.get(defaults, function (options) {
         element:  elem,
         scroller: elem,
         width:    width,
-        height:   height
+        height:   height,
+        root:     false
       }
 
     } else {
