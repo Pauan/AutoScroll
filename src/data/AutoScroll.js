@@ -104,6 +104,7 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   var htmlNode = document.documentElement
+  var htmlNamespace = "http://www.w3.org/1999/xhtml"
 
   // The timer that does the actual scrolling; must be very fast so that the scrolling is smooth
   function startCycle(elem, scroller) {
@@ -151,16 +152,24 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
 
-  var root = document.createElement("div")
+  // This is needed to make AutoScroll work in SVG documents
+  var outer = document.createElementNS(htmlNode.namespaceURI, "foreignObject")
+
+  outer.setAttribute("x", "0px");
+  outer.setAttribute("y", "0px");
+  outer.setAttribute("width", "100%");
+  outer.setAttribute("height", "100%");
+
 
   // TODO replace with `attachShadow` once it's supported in Chrome
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/createShadowRoot
-  var shadow = (root.createShadowRoot
-                 ? root.createShadowRoot()
+  var shadow = (outer.createShadowRoot
+                 ? outer.createShadowRoot()
                  // TODO hack for Chrome 29 to 34, remove this later
-                 : root.webkitCreateShadowRoot())
+                 : outer.webkitCreateShadowRoot())
 
-  var inner = document.createElement("div")
+  // This is needed to make AutoScroll work in SVG documents
+  var inner = document.createElementNS(htmlNamespace, "div")
   // TODO hack to make it so that Chrome doesn't repaint when scrolling
   inner.style.setProperty("transform", "translateZ(0)")
   inner.style.setProperty("display", "none")
@@ -354,11 +363,15 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
 
+  // TODO this isn't quite correct, but it's close enough
+  function findScrollingElement() {
+    return (document.scrollingElement
+             ? document.scrollingElement
+             : document.body)
+  }
+
   function findScrollTop(element) {
-    // TODO this isn't quite correct, but it's close enough
-    var scroller = (document.scrollingElement
-                     ? document.scrollingElement
-                     : document.body);
+    var scroller = findScrollingElement()
 
     var htmlStyle = getComputedStyle(htmlNode)
     var bodyStyle = getComputedStyle(document.body)
@@ -433,10 +446,7 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   function stopEvent(e, preventDefault) {
-    if (e.stopImmediatePropagation) {
-      e.stopImmediatePropagation()
-    }
-
+    e.stopImmediatePropagation()
     e.stopPropagation()
 
     if (preventDefault) {
@@ -463,7 +473,7 @@ chrome.storage.local.get(defaults, function (options) {
   }
 
   ready(function () {
-    document.body.appendChild(root)
+    document.body.appendChild(outer)
 
     addEventListener("mousedown", function (e) {
       if (state.scrolling) {
@@ -472,6 +482,7 @@ chrome.storage.local.get(defaults, function (options) {
       } else {
         if (((e.button === 1 && options["middleClick"]) ||
              (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
+            // TODO what about using middle click on the scrollbar of a non-<html> element ?
             e.clientX < htmlNode.clientWidth &&
             isValid(e.target)) {
 

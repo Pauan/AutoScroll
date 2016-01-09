@@ -31,6 +31,7 @@ TODO
 * Add in touchscreen/tablet support
 * When scrolling horizontally, it should only scroll when the mouse is to the left/right of the disc, like in Firefox
 * When scrolling vertically, it should only scroll when the mouse is to the top/bottom of the disc, like in Firefox
+* Switch to the new options page system (in Chrome)
 
 Intentional differences with Firefox
 ====================================
