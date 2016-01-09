@@ -1,6 +1,15 @@
-# AutoScroll
+AutoScroll
+==========
+
 For users on Linux or Mac, the lack of autoscroll can be a big pain. This extension can help!
 
+Intentional differences with Firefox
+====================================
+
+* AutoScroll does not scroll on `contenteditable` elements; Firefox does
+
+For developers
+==============
 
 Test these sites:
 
@@ -15,7 +24,6 @@ Test these sites:
 * `http://blog.dogecoin.com/`
 * `https://plus.google.com/`
 * `https://duckduckgo.com/?q=test&ia=meanings`
-* `https://upload.wikimedia.org/wikipedia/commons/1/1a/SVG_example_markup_grid.svg`
 
 TODO
 
@@ -32,9 +40,7 @@ TODO
 * Add in touchscreen/tablet support
 * When scrolling horizontally, it should only scroll when the mouse is to the left/right of the disc, like in Firefox
 * When scrolling vertically, it should only scroll when the mouse is to the top/bottom of the disc, like in Firefox
+* Add in an option to stop autoscrolling when the user scrolls with the mouse wheel
+* Option for keyboard-only control
+* Option to change the key binding for activating AutoScroll
 * Switch to the new options page system (in Chrome)
-
-Intentional differences with Firefox
-====================================
-
-* AutoScroll does not scroll on `contenteditable` elements; Firefox does
