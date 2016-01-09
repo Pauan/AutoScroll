@@ -306,8 +306,8 @@ chrome.storage.local.get(defaults, function (options) {
     } else {
       while (true) {
         if (elem === document ||
-            elem === document.body ||
-            elem === htmlNode) {
+            elem === htmlNode ||
+            elem === document.body) {
           return true
 
         } else if (isInvalid(elem)) {
@@ -364,17 +364,18 @@ chrome.storage.local.get(defaults, function (options) {
 
 
   // TODO this isn't quite correct, but it's close enough
-  function findScrollingElement() {
-    return (document.scrollingElement
-             ? document.scrollingElement
-             : document.body)
-  }
-
   function findScrollTop(element) {
-    var scroller = findScrollingElement()
+    // This is needed to support SVG
+    var body = (document.body
+                 ? document.body
+                 : htmlNode)
+
+    var scroller = (document.scrollingElement
+                     ? document.scrollingElement
+                     : body)
 
     var htmlStyle = getComputedStyle(htmlNode)
-    var bodyStyle = getComputedStyle(document.body)
+    var bodyStyle = getComputedStyle(body)
 
     var width = canScrollTop(htmlStyle.overflowX, bodyStyle.overflowX) &&
                 scroller.scrollWidth > element.clientWidth
@@ -421,8 +422,8 @@ chrome.storage.local.get(defaults, function (options) {
   function findScroll(elem) {
     if (options["innerScroll"]) {
       while (elem !== document &&
-             elem !== document.body &&
-             elem !== htmlNode) {
+             elem !== htmlNode &&
+             elem !== document.body) {
 
         var x = findScrollNormal(elem)
 
@@ -454,46 +455,28 @@ chrome.storage.local.get(defaults, function (options) {
     }
   }
 
-  // TODO would be useful for other extensions too
-  // TODO we might not need this anymore
-  function ready(f) {
-    if (document.body) {
-      f()
+
+  htmlNode.appendChild(outer)
+
+  addEventListener("mousedown", function (e) {
+    if (state.scrolling) {
+      stopEvent(e, false)
 
     } else {
-      var observer = new MutationObserver(function () {
-        if (document.body) {
-          observer.disconnect()
-          f()
-        }
-      })
-      // TODO does this need to use childList: true ?
-      observer.observe(htmlNode, { childList: true })
-    }
-  }
+      if (((e.button === 1 && options["middleClick"]) ||
+           (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
+          // TODO what about using middle click on the scrollbar of a non-<html> element ?
+          e.clientX < htmlNode.clientWidth &&
+          e.clientY < htmlNode.clientHeight &&
+          isValid(e.target)) {
 
-  ready(function () {
-    document.body.appendChild(outer)
+        var elem = findScroll(e.target)
 
-    addEventListener("mousedown", function (e) {
-      if (state.scrolling) {
-        stopEvent(e, false)
-
-      } else {
-        if (((e.button === 1 && options["middleClick"]) ||
-             (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
-            // TODO what about using middle click on the scrollbar of a non-<html> element ?
-            e.clientX < htmlNode.clientWidth &&
-            isValid(e.target)) {
-
-          var elem = findScroll(e.target)
-
-          if (elem !== null) {
-            stopEvent(e, false)
-            show(elem, e.clientX, e.clientY)
-          }
+        if (elem !== null) {
+          stopEvent(e, false)
+          show(elem, e.clientX, e.clientY)
         }
       }
-    }, true)
-  })
+    }
+  }, true)
 })
