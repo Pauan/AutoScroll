@@ -471,6 +471,7 @@ chrome.storage.local.get(defaults, function (options) {
     } else {
       if (((e.button === 1 && options["middleClick"]) ||
            (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
+          // Make sure the click is not on a scrollbar
           // TODO what about using middle click on the scrollbar of a non-<html> element ?
           e.clientX < htmlNode.clientWidth &&
           e.clientY < htmlNode.clientHeight &&
