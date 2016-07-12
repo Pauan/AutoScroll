@@ -56,11 +56,11 @@ chrome.storage.local.get(defaults, function (options) {
 
   function image(o) {
     if (o.width && o.height) {
-		return chrome.runtime.getURL("data/images/origin/both.svg")
+      return chrome.runtime.getURL("data/images/origin/both.svg")
     } else if (o.width) {
-		return chrome.runtime.getURL("data/images/origin/horizontal.svg")
+      return chrome.runtime.getURL("data/images/origin/horizontal.svg")
     } else {
-		return chrome.runtime.getURL("data/images/origin/vertical.svg")
+      return chrome.runtime.getURL("data/images/origin/vertical.svg")
     }
   }
 
