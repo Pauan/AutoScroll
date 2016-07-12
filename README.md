@@ -30,7 +30,6 @@ Test these sites:
 
 TODO
 
-* Use SVG rather than PNG images
 * Use the nice Radiance and Ambiance images provided by a user
 * Disable autoscrolling on Windows (since it has native autoscrolling already) ?
 * Add better scaling (slower when near the disc, faster when away from the disc, like in Firefox)
