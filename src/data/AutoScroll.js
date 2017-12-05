@@ -300,6 +300,7 @@ chrome.storage.local.get(defaults, function (options) {
   function isInvalid(elem) {
     return elem.isContentEditable ||
            (elem.localName === "a" && elem.href) ||
+           (elem.localName === "area" && elem.href) ||
            (elem.localName === "textarea") ||
            (elem.localName === "input");
   }
