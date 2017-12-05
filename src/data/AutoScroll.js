@@ -301,8 +301,12 @@ chrome.storage.local.get(defaults, function (options) {
     return elem.isContentEditable ||
            (elem.localName === "a" && elem.href) ||
            (elem.localName === "area" && elem.href) ||
-           (elem.localName === "textarea") ||
-           (elem.localName === "input");
+           (elem.localName === "textarea") && isEditableText(elem) ||
+           (elem.localName === "input") && isEditableText(elem);
+  }
+
+  function isEditableText(elem) {
+    return !(elem.disabled || elem.readOnly);
   }
 
   function isValid(elem) {
