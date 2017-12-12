@@ -296,12 +296,16 @@ chrome.storage.local.get(defaults, function (options) {
     inner.style.removeProperty("display")
   }
 
-
+  const anchor_tags = new Set('a', 'area');
+  const input_tags = new Set('input', 'textarea');
   function isInvalid(elem) {
     return elem.isContentEditable ||
-           (elem.localName === "a" && elem.href) ||
-           (elem.localName === "textarea") ||
-           (elem.localName === "input");
+           (anchor_tags.has(elem.localName) && elem.href) ||
+           (input_tags.has(elem.localName) && isEditableText(elem));
+  }
+
+  function isEditableText(elem) {
+    return !(elem.disabled || elem.readOnly);
   }
 
   function isValid(elem) {
