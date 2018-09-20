@@ -163,15 +163,16 @@ chrome.storage.local.get(defaults, function (options) {
 
 
   // This is needed to make AutoScroll work in SVG documents
-  var outer = document.createElementNS(htmlNamespace, "AutoScroll")
-
+  var outer = document.createElementNS(htmlNamespace, "auto-scroll")
 
   // TODO replace with `attachShadow` once it's supported in Chrome
   // https://developer.mozilla.org/en-US/docs/Web/API/Element/createShadowRoot
-  var shadow = (outer.createShadowRoot
-                 ? outer.createShadowRoot()
-                 // TODO hack for Chrome 29 to 34, remove this later
-                 : outer.webkitCreateShadowRoot())
+  var shadow = outer.attachShadow
+    ? outer.attachShadow({ mode: "closed" })
+    : outer.createShadowRoot
+      ? outer.createShadowRoot()
+      // TODO hack for Chrome 29 to 34, remove this later
+      : outer.webkitCreateShadowRoot()
 
   // This is needed to make AutoScroll work in SVG documents
   var inner = document.createElementNS(htmlNamespace, "div")
@@ -187,7 +188,6 @@ chrome.storage.local.get(defaults, function (options) {
   inner.style.setProperty("background-repeat", "no-repeat")
 
   shadow.appendChild(inner)
-
 
   function mousewheel(event) {
     // TODO is this a good idea ?
