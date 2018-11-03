@@ -165,8 +165,7 @@ chrome.storage.local.get(defaults, function (options) {
   // This is needed to make AutoScroll work in SVG documents
   var outer = document.createElementNS(htmlNamespace, "auto-scroll")
 
-  // TODO replace with `attachShadow` once it's supported in Chrome
-  // https://developer.mozilla.org/en-US/docs/Web/API/Element/createShadowRoot
+  // https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow
   var shadow = outer.attachShadow
     ? outer.attachShadow({ mode: "closed" })
     : outer.createShadowRoot
