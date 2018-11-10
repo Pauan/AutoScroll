@@ -295,8 +295,8 @@ chrome.storage.local.get(defaults, function (options) {
     inner.style.removeProperty("display")
   }
 
-  const anchor_tags = new Set('a', 'area');
-  const input_tags = new Set('input', 'textarea');
+  const anchor_tags = new Set(['a', 'area']);
+  const input_tags = new Set(['input', 'textarea']);
   function isInvalid(elem) {
     return elem.isContentEditable ||
            (anchor_tags.has(elem.localName) && elem.href) ||
