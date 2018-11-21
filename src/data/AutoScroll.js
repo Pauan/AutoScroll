@@ -250,6 +250,7 @@ chrome.storage.local.get(defaults, function (options) {
 
   function unclick() {
     cancelAnimationFrame(state.timeout)
+    state.timeout = null
 
     removeEventListener("wheel", mousewheel, true)
     removeEventListener("mousemove", mousemove, true)
@@ -260,8 +261,6 @@ chrome.storage.local.get(defaults, function (options) {
     inner.style.removeProperty("background-image")
     inner.style.removeProperty("background-position")
     inner.style.setProperty("display", "none")
-
-    state.timeout = null
 
     state.oldX = null
     state.oldY = null
@@ -314,10 +313,18 @@ chrome.storage.local.get(defaults, function (options) {
 
     } else {
       while (true) {
-        if (elem === document ||
-            elem === htmlNode ||
-            elem === bodyNode) {
+        if (elem == null) {
+          // TODO is this correct ?
+          return false
+
+        } else if (elem === document ||
+                   elem === htmlNode ||
+                   elem === bodyNode) {
           return true
+
+        // TODO better check for this
+        } else if (elem.host) {
+          elem = elem.host
 
         } else if (isInvalid(elem)) {
           return false
@@ -430,14 +437,23 @@ chrome.storage.local.get(defaults, function (options) {
       while (elem !== document &&
              elem !== htmlNode &&
              elem !== bodyNode) {
+        // TODO is this correct ?
+        if (elem == null) {
+          return null
 
-        var x = findScrollNormal(elem)
-
-        if (x === null) {
-          elem = elem.parentNode
+        // TODO better check for this
+        } else if (elem.host) {
+          elem = elem.host
 
         } else {
-          return x
+          var x = findScrollNormal(elem)
+
+          if (x === null) {
+            elem = elem.parentNode
+
+          } else {
+            return x
+          }
         }
       }
     }
@@ -469,15 +485,20 @@ chrome.storage.local.get(defaults, function (options) {
       stopEvent(e, true)
 
     } else {
-      if (((e.button === 1 && options["middleClick"]) ||
+      var path = e.composedPath()
+      // TODO use e.target instead of null ?
+      var target = (path.length === 0 ? null : path[0])
+
+      if (target != null &&
+          ((e.button === 1 && options["middleClick"]) ||
            (e.button === 0 && (e.ctrlKey || e.metaKey) && options["ctrlClick"])) &&
           // Make sure the click is not on a scrollbar
           // TODO what about using middle click on the scrollbar of a non-<html> element ?
           e.clientX < htmlNode.clientWidth &&
           e.clientY < htmlNode.clientHeight &&
-          isValid(e.target)) {
+          isValid(target)) {
 
-        var elem = findScroll(e.target)
+        var elem = findScroll(target)
 
         if (elem !== null) {
           stopEvent(e, true)
