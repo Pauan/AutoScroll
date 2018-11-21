@@ -466,7 +466,7 @@ chrome.storage.local.get(defaults, function (options) {
 
   addEventListener("mousedown", function (e) {
     if (state.scrolling) {
-      stopEvent(e, false)
+      stopEvent(e, true)
 
     } else {
       if (((e.button === 1 && options["middleClick"]) ||
@@ -480,7 +480,7 @@ chrome.storage.local.get(defaults, function (options) {
         var elem = findScroll(e.target)
 
         if (elem !== null) {
-          stopEvent(e, false)
+          stopEvent(e, true)
           show(elem, e.clientX, e.clientY)
         }
       }
