@@ -96,7 +96,10 @@ chrome.storage.local.get(defaults, function (options) {
     dirY: 0,
 
     click: false,
-    scrolling: false
+    scrolling: false,
+
+    wheelX: 0,
+    wheelY: 0
   }
 
   var htmlNamespace = "http://www.w3.org/1999/xhtml"
@@ -136,6 +139,11 @@ chrome.storage.local.get(defaults, function (options) {
       } else if (scrollY > scrollHeight) {
         scrollY = scrollHeight
       }
+
+      scrollX += (state.wheelX)
+      scrollY += (state.wheelY)
+      state.wheelX = 0
+      state.wheelY = 0
 
       // This is needed to support SVG
       if (root) {
@@ -191,6 +199,8 @@ chrome.storage.local.get(defaults, function (options) {
   function mousewheel(event) {
     // TODO is this a good idea ?
     stopEvent(event, true)
+    state.wheelX += event.deltaX
+    state.wheelY += event.deltaY
   }
 
   function mousemove(event) {
