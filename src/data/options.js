@@ -176,6 +176,11 @@ require(["lib/chrome-extension/options", "lib/util/cell", "lib/util/ui"], functi
           default: defaults["scrollOnLinks"],
           text: "Scroll when clicking on a link or textarea"
         })
+        
+        options.checkbox(e, opts["disableOnWin32"], {
+          default: defaults["disableOnWin32"],
+          text: "Disable on Windows platform"
+        })
       })
     })
   })
