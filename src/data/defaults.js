@@ -11,5 +11,6 @@ var defaults = {
   capSpeed: "",
   shouldCap: false,
   ctrlClick: true,
-  middleClick: true
+  middleClick: true,
+  disableOnWin32: true
 }

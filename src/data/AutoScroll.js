@@ -480,7 +480,10 @@ chrome.storage.local.get(defaults, function (options) {
 
   htmlNode.appendChild(outer)
 
+    
   addEventListener("mousedown", function (e) {
+    if (navigator.platform == "Win32" && options["disableOnWin32"] == true) return;
+    
     if (state.scrolling) {
       stopEvent(e, true)
 
