@@ -17,9 +17,13 @@ chrome.storage.local.get(defaults, function (options) {
   })
 
 
-  var RAD_TO_DEG = Math.PI / 180
 
   var math = {
+    
+    radToDeg : function (radians){
+      return radians * (180 / Math.PI)
+    },
+
     hypot: function (x, y) {
       return Math.sqrt(x * x + y * y)
     },
@@ -43,7 +47,7 @@ chrome.storage.local.get(defaults, function (options) {
     },
 
     angle: function (x, y) {
-      var angle = Math.atan(y / x) / RAD_TO_DEG
+      var angle = math.radToDeg(Math.atan(y / x))
       if (x < 0) {
         angle += 180
       } else if (y < 0) {
